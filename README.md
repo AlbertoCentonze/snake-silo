@@ -2,7 +2,7 @@
 ![DALL·E 2023-12-08 17 28 30 - A charming scene filled with numerous silos, all artistically crafted from yarn and cloth  These silos are whimsically overflowing with an abundance o](https://github.com/AlbertoCentonze/snake-silo/assets/11707683/b387e4d7-c4b7-4dc8-b174-441ff6933ba0)
 
 ## For the Curve team
-Hello Curve team 👋🏻, I feel like my CV lacked a bit of experience on the vyper side, and since I know how much you love this language, I have decided to start a vyper project to show you how motivated I am to be part of the team.
+Hello Curve team 👋🏻, since I know how much you love Vyper I have decided to start a project to show you how motivated I am to be part of the team.
 
 If you want to go straight to the technical part and see what I've done, skip this section. I'm just going to do some autobiographical shilling here.
 Here's a couple of points that I feel like I'm not able to transmit through my CV:
