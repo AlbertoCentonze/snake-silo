@@ -21,8 +21,13 @@ asset_storage: public(HashMap[address, AssetStorage])
 def __init__():
     pass
 
+# VYPER: Exposing internal function to obtain the equivalent of a public solidity method
+@external
+def is_solvent(user: address) -> bool:
+    return self._is_solvent(user)
+
 @internal
-def is_solvent() -> bool:
+def _is_solvent(user: address) -> bool:
     # TODO implement this later
     return True 
 
@@ -30,6 +35,11 @@ def is_solvent() -> bool:
 def _borrow_possible(asset: address, borrower: address) -> bool:
     # SILO: This function was simplified due the nature of this implementation
     return self.asset_storage[asset].collateral_token.balanceOf(borrower) == 0
+
+@internal
+def _deposit_possible(asset: address, depositor: address) -> bool:
+    # TODO implement this later
+    return True
 
 @view
 @internal
@@ -40,6 +50,7 @@ def _liquidity(asset: address) -> uint256:
 
 @internal
 def _accrue_interest(asset: address):
+    # TODO implement this later
     pass
 
 @external
@@ -47,13 +58,19 @@ def deposit(asset: address, receiver: address, amount: uint256) -> (uint256, uin
     # SILO: changes were made to the arguments since there's no router
     # SILO: changes were made to the arguments since there's no collateral only deposits
     # SILO: changes were made to the function visibility to reduce complexity
+    # TODO add validateMaxDepositsAfter modifier in an idiomatic way
 
     self._accrue_interest(asset)
     
-    # TODO add asset deposit validation
+    # SILO : only possible depositor is msg.sender since no router
+    if not self._deposit_possible(asset, msg.sender):
+        raise "Deposit Not Possible"
 
     state: AssetStorage = self.asset_storage[asset]
 
+    # SILO: No need to assign return value since I return amount directly
+
+    # SILO: removed collateral only logic
     collateral_share: uint256 = self.amount_to_share(amount, state.total_deposits, state.collateral_token.totalSupply())
     state.total_deposits += amount
     state.collateral_token.mint(receiver, collateral_share)
@@ -67,37 +84,52 @@ def withdraw(asset: address, receiver: address, amount: uint256) -> (uint256, ui
     # SILO: changes were made to the arguments since there's no router
     # SILO: changes were made to the arguments since there's no collateral only deposits
     # SILO: changes were made to the function visibility to reduce complexity
+    # TODO add onlyExistingAsset modifier in an idiomatic way
 
     self._accrue_interest(asset)
 
-    # TODO add asset withdraw validation
-
-    if amount == 0:
-        return 0, 0
-
+    # SILO: start of _withdrawAsset logic
+    # SILO: start of _getWithdrawAssetData logic
+    # SILO: ignoring the collateral_only possibility
     state: AssetStorage = self.asset_storage[asset]
-
-    burned_share: uint256 = self.amount_to_share_round_up(amount, state.total_deposits, state.collateral_token.totalSupply())
 
     asset_total_deposits: uint256 = state.total_deposits
     share_token: ShareToken = state.collateral_token
     available_liquidity: uint256 = ERC20(asset).balanceOf(self)
+    # SILO end of _getWithdrawAssetData logic
 
+    # SILO: ignoring the max arugment possibility (check #6)
+    burned_share: uint256 = self.amount_to_share_round_up(amount, state.total_deposits, state.collateral_token.totalSupply())
+    # SILO: _assetAmount is amount here, no need to return it like in soldiity
+    
+    if amount == 0:
+        return 0, 0
 
     if asset_total_deposits < amount:
-        raise "Not Enough Deposits" # TODO: check whether this condition is redundant with the collateral only option
-
+        raise "Not Enough Deposits"
+    
+    # SILO: Can't make this unchecked since there's no access to inilne assembly in vyper
     asset_total_deposits -=  amount
+
+    # TODO add liquidation fee logic here
 
     if available_liquidity < amount:
         raise "Not Enough Liquidity"
+    
+    # SILO: state already accessed in an inlined function call
+
+    # SILO:  ignroing the collateral only possibility
 
     state.total_deposits = asset_total_deposits
+
+    # SILO: only depositor is msg.sender since no router
     share_token.burn(msg.sender, burned_share)
     ERC20(asset).transfer(receiver, amount)
+    # SILO: end of _withdrawAsset logic
 
-    if not self.is_solvent():
-        raise "Insolvent"
+    # SILO: only depositor is msg.sender since no router
+    if not self._is_solvent(msg.sender):
+        raise "Not Solvent"
     return amount, burned_share
 
 @external
@@ -175,7 +207,7 @@ def repay(asset: address, borrower: address, amount: uint256) -> (uint256, uint2
 
 ###########  HELPER FUNCTIONS  ###########
 
-# SILO: This functions were part of a soldity library
+# SILO: This functions were part of the EasyMath soldity library
 
 @pure
 @internal
@@ -186,7 +218,7 @@ def amount_to_share(amount: uint256, totalAmount: uint256, totalShares: uint256)
     result: uint256 = amount * totalShares / totalAmount
 
     if result == 0 and amount != 0:
-        raise "ZeroShares"
+        raise "Zero Shares"
 
     return result
 
