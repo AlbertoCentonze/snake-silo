@@ -54,6 +54,7 @@ def _accrue_interest(asset: address):
     pass
 
 @external
+@nonreentrant("lock")
 def deposit(asset: address, receiver: address, amount: uint256) -> (uint256, uint256):
     # SILO: changes were made to the arguments since there's no router
     # SILO: changes were made to the arguments since there's no collateral only deposits
@@ -80,6 +81,7 @@ def deposit(asset: address, receiver: address, amount: uint256) -> (uint256, uin
     return amount, collateral_share
 
 @external
+@nonreentrant("lock")
 def withdraw(asset: address, receiver: address, amount: uint256) -> (uint256, uint256):
     # SILO: changes were made to the arguments since there's no router
     # SILO: changes were made to the arguments since there's no collateral only deposits
@@ -133,6 +135,7 @@ def withdraw(asset: address, receiver: address, amount: uint256) -> (uint256, ui
     return amount, burned_share
 
 @external
+@nonreentrant("lock")
 def borrow(asset: address, receiver: address, amount: uint256) -> (uint256, uint256):
     # SILO: changes were made to the arguments since there's no router
     # SILO: changes were made to the function visibility to reduce complexity
@@ -166,6 +169,7 @@ def borrow(asset: address, receiver: address, amount: uint256) -> (uint256, uint
     return amount, debt_share
 
 @external
+@nonreentrant("lock")
 def repay(asset: address, borrower: address, amount: uint256) -> (uint256, uint256):
     # SILO: changes were made to the arguments since there's no router
     # SILO: changes were made to the function visibility to reduce complexity
