@@ -57,5 +57,8 @@ Given that vyper 0.3.10 only supports two types of visibility `internal` or `ext
 - For **public methods**, I will create both an `@internal` function containing the implementation (prefixed by `_` and an `@external` one with just the name of the function. The external function will have a comment justifying the change: `# VYPER: Exposing internal function to obtain the equivalent of a public solidity method
 - For both **internal and private methods** I will be using `@internal` since vyper doesn't use inheritance.
 
+## Security Considerations
+Regardless of how much time I will spend on this project, this codebase should be used only for educational purposes and it is not production-ready. Using snippets of this project to develop production applications is at your own risk and I decline any responsibility in case of loss of funds. 
+
 ## Acknowledgements
 A special thank goes to [Silo Finance](https://www.silo.finance/) for creating such a cool protocol, that pursues the ideals of immutability and decentralisation that make DeFi great. Their code and documentation were very well written and easy to navigate.
