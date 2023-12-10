@@ -4,3 +4,6 @@
 [submodule "lib/vyper"]
 	path = lib/vyper
 	url = https://github.com/AlbertoCentonze/vyper
+[submodule "lib/solmate"]
+	path = lib/solmate
+	url = https://github.com/transmissions11/solmate
