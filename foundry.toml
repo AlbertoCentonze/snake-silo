@@ -3,6 +3,7 @@ src = "src"
 out = "out"
 libs = ["lib"]
 ffi = true
+evm_version = "shanghai"
 
 [rpc_endpoints]
 ethereum_alchemy = '${ALCHEMY}'
