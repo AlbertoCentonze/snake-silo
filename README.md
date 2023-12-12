@@ -37,9 +37,14 @@ For now, I have stripped down and implemented the basic functionalities you woul
 
 ## Given unlimited resources, I would: 
 - Turn this into a complete porting of the Silo finance implementation.
-- Try to adapt the previous work done by Certora on Silo to formally verify this codebase.
+- Try to adapt the previous work done by Certora on Silo to verify this codebase formally.
 - Compare the gas efficiency of the two projects once equivalence is reached.
 - Differential testing with the solidity implementation.
+
+## A couple of ideas around an LP-centric money market
+- Collateral-only deposits (those that are not lent out) could stake the collateral in Curve gauges to farm liquidity incentives. This could be used to offer lower interest rates or automatically pay back the loan.
+- Afaik Curve doesn't have a protocol offering leverage on their LPs (like Impermax for UniV2-like protocols), this is indeed a possibility that could be offered by customizing this implementation,
+- As mentioned above enabling LPs to be shorted could turn impermanent loss into impermanent gains, allowing people to bet on high-volatility market movements.
 
 
 ## Differences from the original Silo implementation
