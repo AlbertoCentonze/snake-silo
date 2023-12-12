@@ -1,7 +1,21 @@
 # version 0.3.10
 from vyper.interfaces import ERC20
 
-main_asset: public(address)
+silo_asset: public(address)
+silo_repository: SiloRepository
+
+# SILO: this should go in the repository
+bridge_assets: public(address[2])
+
+# VYPER: in solidity the upperbound depends on solidity max array size
+_all_silo_assets: DynArray[address, 100]
+
+interface SiloRepository:
+    def tokens_factory() -> TokensFactory: nonpayable
+
+interface TokensFactory:
+    def create_share_collateral_token(name: String[100], symbol: String[100], asset: address) -> ShareToken: nonpayable
+    def create_share_debt_token(name: String[100], symbol: String[100], asset: address) -> ShareToken: nonpayable
 
 interface ShareToken:
     def mint(to: address, amount: uint256) -> bool: nonpayable
@@ -18,8 +32,8 @@ struct AssetStorage:
 asset_storage: public(HashMap[address, AssetStorage])
 
 @external
-def __init__():
-    pass
+def __init__(silo_asset: address):
+    self.silo_asset = silo_asset
 
 # VYPER: Exposing internal function to obtain the equivalent of a public solidity method
 @external
@@ -52,6 +66,39 @@ def _liquidity(asset: address) -> uint256:
 def _accrue_interest(asset: address):
     # TODO implement this later
     pass
+
+@internal 
+def _init_asset(tokens_factory: TokensFactory, asset: address, is_bridge_asset: bool):
+    # SILO: not generating share names
+
+    state: AssetStorage = self.asset_storage[asset]
+
+    state.collateral_token = tokens_factory.create_share_collateral_token("name placeholder", "symbol placeholder", asset)
+
+    # SILO: skipping collateral only token
+
+    state.debt_token = tokens_factory.create_share_debt_token("name placeholder", "symbol placeholder", asset)
+
+    self._all_silo_assets.append(asset)
+
+    # SILO: skipping interest data
+
+@internal
+def _init_asset_tokens():
+    # SILO: Not using token factory so putting empty(address) where necessary
+    tokens_factory: TokensFactory = self.silo_repository.tokens_factory() 
+    
+    if self.asset_storage[self.silo_asset].collateral_token.address == empty(address):
+        self._init_asset(tokens_factory, self.silo_asset, False)
+
+    for i in range(2): # SILO: capping bridge assets to 2
+        bridge_asset: address = self.bridge_assets[i]
+        if self.asset_storage[bridge_asset].collateral_token.address == empty(address):
+            self._init_asset(tokens_factory, bridge_asset, True)
+        else:
+            # SILO: no interest data
+            pass
+
 
 @external
 @nonreentrant("lock")
