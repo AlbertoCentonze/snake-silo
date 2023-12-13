@@ -45,6 +45,11 @@ def _is_solvent(user: address) -> bool:
     # TODO implement this later
     return True 
 
+# VYPER: Exposing internal function to obtain the equivalent of a public solidity method
+@external
+def borrow_possible(asset: address, borrower: address) -> bool:
+    return self._borrow_possible(asset, borrower)
+
 @internal
 def _borrow_possible(asset: address, borrower: address) -> bool:
     # SILO: This function was simplified due the nature of this implementation
