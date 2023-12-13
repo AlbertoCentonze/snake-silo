@@ -50,6 +50,12 @@ def _borrow_possible(asset: address, borrower: address) -> bool:
     # SILO: This function was simplified due the nature of this implementation
     return self.asset_storage[asset].collateral_token.balanceOf(borrower) == 0
 
+# VYPER: Exposing internal function to obtain the equivalent of a public solidity method
+@external
+def deposit_possible(asset: address, depositor: address) -> bool:
+    return self._deposit_possible(asset, depositor)
+
+
 @internal
 def _deposit_possible(asset: address, depositor: address) -> bool:
     # TODO implement this later
