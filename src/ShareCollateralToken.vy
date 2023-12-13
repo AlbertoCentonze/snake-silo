@@ -50,6 +50,7 @@
                  https://github.com/OpenZeppelin/openzeppelin-contracts/issues/3931.
 """
 
+# TODO figure out interface imports
 interface Silo:
     def deposit_possible(asset: address, depositor: address) -> bool: nonpayable
     def is_solvent(user: address) -> bool: nonpayable
@@ -64,8 +65,6 @@ implements: ERC20
 # which is a built-in interface of the Vyper compiler.
 from vyper.interfaces import ERC20Detailed
 implements: ERC20Detailed
-
-# SILO: Not implementing ERC20R for now
 
 # @dev Returns the decimals places of the token.
 # The default value is 18.
@@ -683,7 +682,7 @@ def _after_token_transfer(owner: address, to: address, amount: uint256):
     if total != 0 and total < MINIMUM_SHARE_AMOUNT:
         raise "Minimum Share Requirement"
     
-    if self._is_transfer(owner, to) and not silo.is_solvent(to):
+    if self._is_transfer(owner, to) and not silo.is_solvent(owner):
         raise "Sender Not Solvent After Transfer"
 
     self._notify_about_transfer(owner, to, amount)
