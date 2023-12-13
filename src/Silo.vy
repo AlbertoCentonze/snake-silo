@@ -123,7 +123,7 @@ def deposit(asset: address, receiver: address, amount: uint256) -> (uint256, uin
     state.total_deposits += amount
     state.collateral_token.mint(receiver, collateral_share)
 
-    ERC20(asset).transferFrom(msg.sender, self, amount)
+    ERC20(asset).transferFrom(msg.sender, self, amount, default_return_value=True)
 
     return amount, collateral_share
 
@@ -173,7 +173,7 @@ def withdraw(asset: address, receiver: address, amount: uint256) -> (uint256, ui
 
     # SILO: only depositor is msg.sender since no router
     share_token.burn(msg.sender, burned_share)
-    ERC20(asset).transfer(receiver, amount)
+    ERC20(asset).transfer(receiver, amount, default_return_value=True)
     # SILO: end of _withdrawAsset logic
 
     # SILO: only depositor is msg.sender since no router
@@ -209,7 +209,7 @@ def borrow(asset: address, receiver: address, amount: uint256) -> (uint256, uint
 
     state.debt_token.mint(receiver, debt_share)
 
-    ERC20(asset).transfer(receiver, amount)
+    ERC20(asset).transfer(receiver, amount, default_return_value=True)
 
     # SILO: removed validate borrow after logic here
 
@@ -248,7 +248,7 @@ def repay(asset: address, borrower: address, amount: uint256) -> (uint256, uint2
         raise "Unexpected Empty Return"
 
     # SILO: msg.sender is the only repayer possible since no router
-    ERC20(asset).transferFrom(msg.sender, self, amount)
+    ERC20(asset).transferFrom(msg.sender, self, amount, default_return_value=True)
 
     state.total_borrow_amount -= amount
     state.debt_token.burn(borrower, repaid_share)
@@ -302,3 +302,9 @@ def share_to_amount_round_up(share: uint256, total_amount: uint256, total_shares
         result += 1
 
     return result
+
+# using forceApprove instead of safeApprove since it has been deprecated by oz
+@internal
+def forceApprove(asset: ERC20, spender: address, amount: uint256):
+    asset.approve(spender, 0, default_return_value=True)
+    asset.approve(spender, amount, default_return_value=True)
