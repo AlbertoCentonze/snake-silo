@@ -66,4 +66,5 @@ Given that vyper 0.3.10 only supports two types of visibility `internal` or `ext
 Regardless of how much time I will spend on this project, this codebase should be used only for educational purposes and it is not production-ready. Using snippets of this project to develop production applications is at your own risk and I decline any responsibility in case of loss of funds. 
 
 ## Acknowledgements
-A special thank goes to [Silo Finance](https://www.silo.finance/) for creating such a cool protocol, that pursues the ideals of immutability and decentralisation that make DeFi great. Their code and documentation were very well written and easy to navigate.
+- A special thank goes to [Silo Finance](https://www.silo.finance/) for creating such a cool protocol, that pursues the ideals of immutability and decentralisation that make DeFi great. Their code and documentation were very well written and easy to navigate.
+- The amazing [Snekmate](https://github.com/pcaversaccio/snekmate) by [pcaversaccio](https://github.com/pcaversaccio) was used as the base implementation for `ShareCollateralToken` and `ShareDebtToken`.
