@@ -4,6 +4,8 @@
 ## For the Curve team
 Hello Curve team 👋🏻, since I know how much you love Vyper I have decided to start a project to show you how motivated I am to be part of the team.
 
+> BONUS: I took a small break from this repo because I got really into vyper! I contributed to the compiler with [this PR](https://github.com/vyperlang/vyper/pull/3697).
+
 If you want to go straight to the technical part and see what I've done, skip this section. I'm just going to do some autobiographical shilling here.
 Here's a couple of points that I feel like I'm not able to transmit through my CV:
 - Curve is one of the first protocols I aped in, my very first time was on [the geist pool on Fantom](https://ftmscan.com/tx/0xee0a9731c8b56ce76b4bd7baa9182cf1396d609b96719d24d6c9032daea29dbd) (questionable choice with the benefit of hindsight).
