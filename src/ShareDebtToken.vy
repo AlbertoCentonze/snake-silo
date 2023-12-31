@@ -50,10 +50,21 @@
                  https://github.com/OpenZeppelin/openzeppelin-contracts/issues/3931.
 """
 
-# TODO figure out interface imports
-interface Silo:
-    def borrow_possible(asset: address, borrower: address) -> bool: nonpayable
-    def is_solvent(user: address) -> bool: nonpayable
+# VYPER: Temporary solution for broken import until 0.4
+interface ShareToken:
+    def mint(to: address, amount: uint256) -> bool: nonpayable
+    def burn(_from: address, amount: uint256) -> bool: nonpayable
+    def totalSupply() -> uint256: view
+    def balanceOf(_owner: address) -> uint256: view
+    
+# VYPER: Temporary solution for broken import until 0.4
+struct AssetStorage:
+    collateral_token: ShareToken
+    debt_token: ShareToken
+    total_deposits: uint256 
+    total_borrow_amount: uint256 
+
+import Silo as Silo
 
 # @dev We import and implement the `ERC20` interface,
 # which is a built-in interface of the Vyper compiler.
