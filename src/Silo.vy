@@ -78,17 +78,18 @@ def _accrue_interest(asset: address):
     # TODO implement this later
     pass
 
-@internal 
-def _init_asset(tokens_factory: TokensFactory, asset: address, is_bridge_asset: bool):
+# SILO: making this function external since it's not called by the factory
+@external 
+def init_asset(collateral_token: address, debt_token: address, asset: address, is_bridge_asset: bool):
     # SILO: not generating share names
 
-    state: AssetStorage = self.asset_storage[asset]
-
-    state.collateral_token = tokens_factory.create_share_collateral_token("name placeholder", "symbol placeholder", asset)
+    # VYPER: factory logic was removed since it's considered an antipattern in vyper
+    self.asset_storage[asset].collateral_token = ShareToken(collateral_token)
 
     # SILO: skipping collateral only token
 
-    state.debt_token = tokens_factory.create_share_debt_token("name placeholder", "symbol placeholder", asset)
+    # VYPER: factory logic was removed since it's considered an antipattern in vyper
+    self.asset_storage[asset].debt_token = ShareToken(debt_token)
 
     self._all_silo_assets.append(asset)
 
@@ -96,19 +97,8 @@ def _init_asset(tokens_factory: TokensFactory, asset: address, is_bridge_asset: 
 
 @internal
 def _init_asset_tokens():
-    # SILO: Not using token factory so putting empty(address) where necessary
-    tokens_factory: TokensFactory = self.silo_repository.tokens_factory() 
-    
-    if self.asset_storage[self.silo_asset].collateral_token.address == empty(address):
-        self._init_asset(tokens_factory, self.silo_asset, False)
-
-    for i in range(2): # SILO: capping bridge assets to 2
-        bridge_asset: address = self.bridge_assets[i]
-        if self.asset_storage[bridge_asset].collateral_token.address == empty(address):
-            self._init_asset(tokens_factory, bridge_asset, True)
-        else:
-            # SILO: no interest data
-            pass
+    # VYPER + SILO: ignoring this logic sine it heavily relies on factories
+    pass
 
 
 @external
