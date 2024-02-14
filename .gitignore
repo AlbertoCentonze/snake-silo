@@ -12,3 +12,8 @@ docs/
 
 # Dotenv file
 .env
+
+# pytest cache
+__pycache__/
+.pytest_cache/
+

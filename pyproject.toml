@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "snake-silo"
+version = "0.1.0"
+description = ""
+authors = ["Alberto <albicento.ac@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.10.13"
+titanoboa = { git = "https://github.com/vyperlang/titanoboa.git", rev = "7301b85940820ab2bb2067df840d7f71ca965e1d" }
+pytest = "^7.4.0"
+hypothesis = "^6.98.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
