@@ -231,8 +231,6 @@ def __init__(name_: String[25], symbol_: String[5], silo_: address, asset_: addr
            main version of the signing domain. Signatures
            from different versions are not compatible.
     """
-    # SILO: adding factory logic to constructor
-    
     # SILO: constructing silo variables
     silo = Silo(silo_)
     asset = asset_
