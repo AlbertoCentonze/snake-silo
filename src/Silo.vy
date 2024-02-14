@@ -18,8 +18,8 @@ interface TokensFactory:
     def create_share_debt_token(name: String[100], symbol: String[100], asset: address) -> ShareToken: nonpayable
 
 interface ShareToken:
-    def mint(to: address, amount: uint256) -> bool: nonpayable
-    def burn(_from: address, amount: uint256) -> bool: nonpayable
+    def mint(to: address, amount: uint256): nonpayable
+    def burn(_from: address, amount: uint256): nonpayable
     def totalSupply() -> uint256: view
     def balanceOf(_owner: address) -> uint256: view
     
