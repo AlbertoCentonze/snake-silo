@@ -364,7 +364,8 @@ def burn_from(owner: address, amount: uint256):
     @param owner The 20-byte owner address.
     @param amount The 32-byte token amount to be destroyed.
     """
-    self._spend_allowance(owner, msg.sender, amount)
+    # TODO: access should be silo-gated
+    # SNEKMATE: self._spend_allowance(owner, msg.sender, amount)
     self._burn(owner, amount)
 
 

@@ -19,7 +19,7 @@ interface TokensFactory:
 
 interface ShareToken:
     def mint(to: address, amount: uint256): nonpayable
-    def burn(_from: address, amount: uint256): nonpayable
+    def burn_from(_from: address, amount: uint256): nonpayable
     def totalSupply() -> uint256: view
     def balanceOf(_owner: address) -> uint256: view
     
@@ -121,7 +121,7 @@ def deposit(asset: address, receiver: address, amount: uint256) -> (uint256, uin
 
     # SILO: removed collateral only logic
     collateral_share: uint256 = self.amount_to_share(amount, state.total_deposits, state.collateral_token.totalSupply())
-    state.total_deposits += amount
+    self.asset_storage[asset].total_deposits += amount
     state.collateral_token.mint(receiver, collateral_share)
 
     ERC20(asset).transferFrom(msg.sender, self, amount, default_return_value=True)
@@ -173,7 +173,7 @@ def withdraw(asset: address, receiver: address, amount: uint256) -> (uint256, ui
     state.total_deposits = asset_total_deposits
 
     # SILO: only depositor is msg.sender since no router
-    share_token.burn(msg.sender, burned_share)
+    share_token.burn_from(msg.sender, burned_share)
     ERC20(asset).transfer(receiver, amount, default_return_value=True)
     # SILO: end of _withdrawAsset logic
 
@@ -252,7 +252,7 @@ def repay(asset: address, borrower: address, amount: uint256) -> (uint256, uint2
     ERC20(asset).transferFrom(msg.sender, self, amount, default_return_value=True)
 
     state.total_borrow_amount -= amount
-    state.debt_token.burn(borrower, repaid_share)
+    state.debt_token.burn_from(borrower, repaid_share)
 
     return repaid_amount, repaid_share
 
