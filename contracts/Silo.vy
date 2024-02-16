@@ -195,7 +195,7 @@ def borrow(asset: address, receiver: address, amount: uint256) -> (uint256, uint
     if not self._borrow_possible(asset, msg.sender):
         raise "Borrow Not Possible"
     
-    if not self._liquidity(asset) < amount:
+    if self._liquidity(asset) < amount:
         raise "Not Enough Liquidity"
 
     state: AssetStorage = self.asset_storage[asset]
