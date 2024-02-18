@@ -17,3 +17,5 @@ docs/
 __pycache__/
 .pytest_cache/
 
+# jetbrains
+.idea/
