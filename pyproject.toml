@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "3.10.13"
-titanoboa = { git = "https://github.com/vyperlang/titanoboa.git", rev = "7301b85940820ab2bb2067df840d7f71ca965e1d" }
+titanoboa = { git = "https://github.com/vyperlang/titanoboa.git", rev = "fb52c0fec2c3a42f1c0ab6fc255a5c207b998a4c" }
 pytest = "^7.4.0"
 hypothesis = "^6.98.4"
 
