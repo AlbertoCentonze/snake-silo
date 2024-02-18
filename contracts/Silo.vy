@@ -204,7 +204,7 @@ def borrow(asset: address, receiver: address, amount: uint256) -> (uint256, uint
 
     debt_share: uint256 = self.amount_to_share_round_up(amount, state.total_borrow_amount, state.debt_token.totalSupply())
     
-    state.total_borrow_amount += amount
+    self.asset_storage[asset].total_borrow_amount += amount
 
     # SILO: removed protocol fees logic here
 
@@ -259,7 +259,7 @@ def repay(asset: address, borrower: address, amount: uint256) -> (uint256, uint2
 
 ###########  HELPER FUNCTIONS  ###########
 
-# SILO: This functions were part of the EasyMath soldity library
+# SILO: These functions were part of the EasyMath solidity library
 
 @pure
 @internal
