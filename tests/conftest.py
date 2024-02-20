@@ -35,14 +35,12 @@ def collat(admin, silo, silo_asset):
         return collat
 
 
-
 @pytest.fixture(scope="session")
 def silo_asset(admin):
     with boa.env.prank(admin):
         silo_asset = boa.load("./tests/contracts/MockERC20.vy", "MockERC20", "MOCK", 10, "Whatever", "Whatever")
         boa.env.alias(silo_asset.address, "silo_asset")
         return silo_asset
-
 
 
 @pytest.fixture(scope="session")
@@ -58,8 +56,6 @@ def setup(admin, silo, silo_asset, collat, debt):
     with boa.env.prank(admin):
         silo.init_asset(collat.address, debt.address, silo_asset.address, False);
     with boa.env.prank(silo.address):
-        collat.set_minter(admin, True)
-        debt.set_minter(admin, True)
+        collat.set_minter(silo.address, True)
+        debt.set_minter(silo.address, True)
     yield
-
-boa.env

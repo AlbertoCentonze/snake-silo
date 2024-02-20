@@ -397,7 +397,8 @@ def set_minter(minter: address, status: bool):
     assert minter != empty(address), "AccessControl: minter is the zero address"
     # We ensured in the previous step `self._check_owner()`
     # that `msg.sender` is the `owner`.
-    assert minter != msg.sender, "AccessControl: minter is owner address"
+    # SILO: Skipping this condition since separation of privileges is not needed
+    # assert minter != msg.sender, "AccessControl: minter is owner address"
     self.is_minter[minter] = status
     log RoleMinterChanged(minter, status)
 

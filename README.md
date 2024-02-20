@@ -10,7 +10,7 @@ The goal of this project is to create a very minimal version of Silo able to onb
 For now, I have stripped down and implemented the basic functionalities you would expect from a lending market (deposit, withdraw, borrow, repay). Here's what's next:
 - [x] Lending market basic implementation.
 - [x] Setup vyper compilation for foundry
-- [ ] Initial testing to make sure that I can move forward.
+- [x] Initial testing to make sure that I can move forward.
 - [ ] Port the router to be able to batch multiple interactions with the market at once.
 - [ ] Functions that batches all the necessary calls to open the short in one transaction.
 - [ ] Onboard Curve LPs.
