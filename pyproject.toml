@@ -6,7 +6,7 @@ authors = ["Alberto <albicento.ac@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "3.10.13"
+python = "^3.10.11"
 titanoboa = { git = "https://github.com/vyperlang/titanoboa.git", rev = "fb52c0fec2c3a42f1c0ab6fc255a5c207b998a4c" }
 pytest = "^7.4.0"
 hypothesis = "^6.98.4"
