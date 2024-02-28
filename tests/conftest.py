@@ -24,7 +24,7 @@ def admin():
 @pytest.fixture(scope="session")
 def debt(admin, silo, silo_asset):
     with boa.env.prank(admin):
-        debt = ShareDebtToken.deploy("debt", "debt", silo.address, silo_asset.address)
+        debt = ShareDebtToken("debt", "debt", silo.address, silo_asset.address)
         boa.env.alias(debt.address, "debt")
         return debt
 
